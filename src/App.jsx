@@ -3,23 +3,30 @@ import { useState } from "react"
 export default function App() {
 
   const [cityInput, setCityInput] = useState("");
- 
-function handleSubmit() {
-  
-}
+  const [loading, setLoading] = useState(false);
 
-  return(
+  function handleSubmit() {
+    setLoading(true);
+
+    fetch("https://jsonplaceholder.typicode.com/posts/1")
+      .then(response => response.json())
+      .then(function (data) {
+        console.log(data);
+      })
+      .then(() => setLoading(false));
+  }
+
+  return (
     <>
-    <input
-    value={cityInput} 
-    onChange={(e) => setCityInput(e.target.value)}
-    type="text" 
-    placeholder="Enter City" />
+      <input
+        value={cityInput}
+        onChange={(e) => setCityInput(e.target.value)}
+        type="text"
+        placeholder="Enter City" />
 
-    
+      <button onClick={handleSubmit}>Submit</button>
 
-    <button onClick={handleSubmit}>Submit</button>
+      {loading && <p>loading...</p>}
     </>
   )
-  
 }
