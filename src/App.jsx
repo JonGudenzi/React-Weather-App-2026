@@ -4,6 +4,7 @@ export default function App() {
 
   const [cityInput, setCityInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [weatherData, setWeatherData] = useState(null);
 
   function handleSubmit() {
     setLoading(true);
@@ -11,6 +12,7 @@ export default function App() {
     fetch("https://jsonplaceholder.typicode.com/posts/1")
       .then(response => response.json())
       .then(function (data) {
+        setWeatherData(data);
         console.log(data);
       })
       .then(() => setLoading(false));
@@ -24,9 +26,12 @@ export default function App() {
         type="text"
         placeholder="Enter City" />
 
-      <button onClick={handleSubmit}>Submit</button>
+      <button 
+      onClick={handleSubmit}
+      disabled = {loading}>Submit</button>
 
       {loading && <p>loading...</p>}
+      {weatherData && <p>{weatherData.title}</p>}
     </>
   )
 }
