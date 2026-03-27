@@ -26,12 +26,18 @@ export default function App() {
         type="text"
         placeholder="Enter City" />
 
-      <button 
-      onClick={handleSubmit}
-      disabled = {loading}>Submit</button>
+      <button
+        onClick={handleSubmit}
+        disabled={loading}>Submit</button>
 
       {loading && <p>loading...</p>}
-      {weatherData && <p>{weatherData.title}</p>}
+      {weatherData && (
+        <>
+          <p>{weatherData.title}</p>
+          <p>{weatherData.body}</p>
+        </>
+      )
+      }
     </>
   )
 }
