@@ -11,10 +11,10 @@ export default function App() {
     setLoading(true);
     setError(null);
 
-    fetch("https://jsonplaceholder.typicode.com/posts/1")
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityInput}`)
       .then(response => response.json())
       .then(function (data) {
-        setWeatherData(data);
+        setWeatherData(data.results[0]);
         console.log(data);
         setLoading(false);
       });
@@ -36,8 +36,9 @@ export default function App() {
       {error && <p>{error}</p>}
       {weatherData && (
         <>
-          <p>{weatherData.title}</p>
-          <p>{weatherData.body}</p>
+        <p>{weatherData.name}</p>
+          <p>{weatherData.latitude}</p>
+          <p>{weatherData.longitude}</p>
         </>
       )
       }
