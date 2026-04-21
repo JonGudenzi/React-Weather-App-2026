@@ -14,7 +14,13 @@ export default function App() {
     fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityInput}`)
       .then(response => response.json())
       .then(function (data) {
-        setWeatherData(data.results[0]);
+        if (data.results.length > 0) {
+          setWeatherData(data.results[0]);
+          setError(null);
+        }
+        else {
+          setError("City not found");
+        }
         console.log(data);
         setLoading(false);
       });
@@ -36,7 +42,7 @@ export default function App() {
       {error && <p>{error}</p>}
       {weatherData && (
         <>
-        <p>{weatherData.name}</p>
+          <p>{weatherData.name}</p>
           <p>{weatherData.latitude}</p>
           <p>{weatherData.longitude}</p>
         </>
