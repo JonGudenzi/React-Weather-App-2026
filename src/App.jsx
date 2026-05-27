@@ -16,6 +16,13 @@ export default function App() {
       .then(function (data) {
         if (data.results.length > 0) {
           setWeatherData(data.results[0]);
+          const latitude = data.results[0].latitude;
+          const longitude = data.results[0].longitude;
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
+          .then(response => response.json())
+          .then(function (data) {
+          console.log(data);
+          })
           setError(null);
         }
         else {
