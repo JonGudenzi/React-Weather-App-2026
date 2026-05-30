@@ -11,6 +11,7 @@ export default function App() {
   function handleSubmit() {
     setLoading(true);
     setError(null);
+    setWeatherData(null);
 
     fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityInput}`)
       .then(response => response.json())
@@ -18,7 +19,7 @@ export default function App() {
         if (data.results && data.results.length > 0) {
           const latitude = data.results[0].latitude;
           const longitude = data.results[0].longitude;
-          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
             .then(response => response.json())
             .then(function (data) {
               setWeatherData(data.current_weather);
