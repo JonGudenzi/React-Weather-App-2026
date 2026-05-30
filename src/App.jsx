@@ -1,4 +1,5 @@
 import { useState } from "react"
+import WeatherCard from "./WeatherCard";
 
 export default function App() {
 
@@ -15,21 +16,21 @@ export default function App() {
       .then(response => response.json())
       .then(function (data) {
         if (data.results.length > 0) {
-          setWeatherData(data.results[0]);
           const latitude = data.results[0].latitude;
           const longitude = data.results[0].longitude;
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
-          .then(response => response.json())
-          .then(function (data) {
-          console.log(data);
-          })
+            .then(response => response.json())
+            .then(function (data) {
+              setWeatherData(data.current_weather);
+              setLoading(false);
+            })
           setError(null);
         }
         else {
           setError("City not found");
+          setLoading(false);
         }
         console.log(data);
-        setLoading(false);
       });
   }
 
@@ -44,17 +45,9 @@ export default function App() {
       <button
         onClick={handleSubmit}
         disabled={loading}>Submit</button>
-
       {loading && <p>loading...</p>}
       {error && <p>{error}</p>}
-      {weatherData && (
-        <>
-          <p>{weatherData.name}</p>
-          <p>{weatherData.latitude}</p>
-          <p>{weatherData.longitude}</p>
-        </>
-      )
-      }
+      {weatherData && <WeatherCard weatherData={weatherData} />}
     </>
   )
 }
