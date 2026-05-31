@@ -45,12 +45,18 @@ export default function App() {
   function handleLocationSelect(location) {
     const latitude = location.latitude;
     const longitude = location.longitude;
+    setLoading(true);
+    setError(null);
     fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
             .then(response => response.json())
             .then(function (data) {
               setWeatherData(data.current_weather);
               setLocationResults([]);
               console.log(data.current_weather);
+              setLoading(false);
+            })
+            .catch(function () {
+              setError("Weather service is unavailable.")
               setLoading(false);
             })
   }
