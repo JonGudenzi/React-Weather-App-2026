@@ -6,6 +6,7 @@ export default function App() {
   const [cityInput, setCityInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
+  const [locationResults, setLocationResults] = useState([]);
   const [error, setError] = useState(null);
 
   function handleSubmit() {
@@ -17,16 +18,18 @@ export default function App() {
       .then(response => response.json())
       .then(function (data) {
         if (data.results && data.results.length > 0) {
-          const latitude = data.results[0].latitude;
-          const longitude = data.results[0].longitude;
-          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
-            .then(response => response.json())
-            .then(function (data) {
-              setWeatherData(data.current_weather);
-              console.log(data.current_weather);
-              setLoading(false);
-            })
+          setLocationResults(data.results);
+          // const latitude = data.results[0].latitude;
+          // const longitude = data.results[0].longitude;
+          // fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
+          //   .then(response => response.json())
+          //   .then(function (data) {
+          //     setWeatherData(data.current_weather);
+          //     console.log(data.current_weather);
+          //     setLoading(false);
+          //   })
           setError(null);
+          setLoading(false);
         }
         else {
           setError("City not found");
@@ -48,6 +51,10 @@ export default function App() {
     } return "Unknown Weather";
   }
 
+function handleLocationSelect(location) {
+  
+}
+
   return (
     <>
       <input
@@ -61,10 +68,22 @@ export default function App() {
         disabled={loading}>Submit</button>
       {loading && <p>loading...</p>}
       {error && <p>{error}</p>}
-      {weatherData && 
-      <WeatherCard 
-      weatherData={weatherData}
-      getWeatherDescription={getWeatherDescription} />}
+
+      <>
+        {locationResults.map((location) => {
+          return (<button>
+            {location.name} {"- "}
+            {location.admin1} {"- "}
+            {location.country} 
+            </button>
+          )
+        })}
+      </>
+
+      {weatherData &&
+        <WeatherCard
+          weatherData={weatherData}
+          getWeatherDescription={getWeatherDescription} />}
     </>
   )
 }
