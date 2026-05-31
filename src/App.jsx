@@ -19,15 +19,6 @@ export default function App() {
       .then(function (data) {
         if (data.results && data.results.length > 0) {
           setLocationResults(data.results);
-          // const latitude = data.results[0].latitude;
-          // const longitude = data.results[0].longitude;
-          // fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
-          //   .then(response => response.json())
-          //   .then(function (data) {
-          //     setWeatherData(data.current_weather);
-          //     console.log(data.current_weather);
-          //     setLoading(false);
-          //   })
           setError(null);
           setLoading(false);
         }
@@ -51,9 +42,18 @@ export default function App() {
     } return "Unknown Weather";
   }
 
-function handleLocationSelect(location) {
-  
-}
+  function handleLocationSelect(location) {
+    const latitude = location.latitude;
+    const longitude = location.longitude;
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
+            .then(response => response.json())
+            .then(function (data) {
+              setWeatherData(data.current_weather);
+              setLocationResults([]);
+              console.log(data.current_weather);
+              setLoading(false);
+            })
+  }
 
   return (
     <>
@@ -71,11 +71,11 @@ function handleLocationSelect(location) {
 
       <>
         {locationResults.map((location) => {
-          return (<button>
+          return (<button onClick={() => handleLocationSelect(location)}>
             {location.name} {"- "}
             {location.admin1} {"- "}
-            {location.country} 
-            </button>
+            {location.country}
+          </button>
           )
         })}
       </>
