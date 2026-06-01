@@ -27,6 +27,10 @@ export default function App() {
           setLoading(false);
         }
         console.log(data);
+      })
+      .catch(function () {
+        setError("Could not search for locations.");
+        setLoading(false);
       });
   }
 
