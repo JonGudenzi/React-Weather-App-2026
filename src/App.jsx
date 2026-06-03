@@ -81,7 +81,9 @@ export default function App() {
 
       <>
         {locationResults.map((location) => {
-          return (<button onClick={() => handleLocationSelect(location)}>
+          return (<button 
+          onClick={() => handleLocationSelect(location)}
+          key={location.id}>
             {location.name} {"- "}
             {location.admin1} {"- "}
             {location.country}
