@@ -7,6 +7,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
   const [locationResults, setLocationResults] = useState([]);
+  const [recentLocations, setRecentLocations] = useState([]);
   const [error, setError] = useState(null);
 
   function handleSubmit() {
@@ -52,18 +53,20 @@ export default function App() {
     setLoading(true);
     setError(null);
     fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph`)
-            .then(response => response.json())
-            .then(function (data) {
-              setWeatherData(data.current_weather);
-              setLocationResults([]);
-              console.log(data.current_weather);
-              setLoading(false);
-            })
-            .catch(function () {
-              setError("Weather service is unavailable.")
-              setLoading(false);
-            })
+      .then(response => response.json())
+      .then(function (data) {
+        setWeatherData(data.current_weather);
+        setLocationResults([]);
+        console.log(data.current_weather);
+        setRecentLocations(prev => [location, ...prev]);
+        setLoading(false);
+      })
+      .catch(function () {
+        setError("Weather service is unavailable.")
+        setLoading(false);
+      })
   }
+  console.log(recentLocations);
 
   return (
     <>
@@ -81,9 +84,9 @@ export default function App() {
 
       <>
         {locationResults.map((location) => {
-          return (<button 
-          onClick={() => handleLocationSelect(location)}
-          key={location.id}>
+          return (<button
+            onClick={() => handleLocationSelect(location)}
+            key={location.id}>
             {location.name} {"- "}
             {location.admin1} {"- "}
             {location.country}
@@ -96,6 +99,18 @@ export default function App() {
         <WeatherCard
           weatherData={weatherData}
           getWeatherDescription={getWeatherDescription} />}
+
+      <h3>Recent Searches</h3>
+      {recentLocations.map((location) => {
+        return (<button
+          onClick={() => handleLocationSelect(location)}
+          key={location.id}>
+          {location.name} {"- "}
+          {location.admin1} {"- "}
+          {location.country}
+        </button>
+        )
+      })}
     </>
   )
 }
