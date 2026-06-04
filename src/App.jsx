@@ -58,7 +58,12 @@ export default function App() {
         setWeatherData(data.current_weather);
         setLocationResults([]);
         console.log(data.current_weather);
-        setRecentLocations(prev => [location, ...prev]);
+        setRecentLocations(prev => {
+          const filteredLocations = prev.filter(
+            savedLocation => savedLocation.id !== location.id
+          );
+          return [location, ...filteredLocations];
+        });
         setLoading(false);
       })
       .catch(function () {
