@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
 import WeatherCard from "./WeatherCard";
 
 export default function App() {
@@ -9,6 +9,9 @@ export default function App() {
   const [locationResults, setLocationResults] = useState([]);
   const [recentLocations, setRecentLocations] = useState([]);
   const [error, setError] = useState(null);
+
+  useEffect(() => localStorage.setItem("recentLocations", JSON.stringify(recentLocations))
+      ,[recentLocations]);
 
   function handleSubmit() {
     setLoading(true);
