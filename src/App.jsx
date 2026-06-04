@@ -62,8 +62,10 @@ export default function App() {
           const filteredLocations = prev.filter(
             savedLocation => savedLocation.id !== location.id
           );
-          return [location, ...filteredLocations];
+          const newRecentLocations = [location, ...filteredLocations];
+          return newRecentLocations.slice(0, 5);
         });
+
         setLoading(false);
       })
       .catch(function () {
