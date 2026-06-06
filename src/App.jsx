@@ -7,11 +7,18 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
   const [locationResults, setLocationResults] = useState([]);
-  const [recentLocations, setRecentLocations] = useState([]);
   const [error, setError] = useState(null);
+  const [recentLocations, setRecentLocations] = useState(() => {
+    const savedRecentSearches = localStorage.getItem("recentLocations");
+    if (savedRecentSearches) {
+      return JSON.parse(savedRecentSearches);
+    }
+    return [];
+  });
 
   useEffect(() => localStorage.setItem("recentLocations", JSON.stringify(recentLocations))
-      ,[recentLocations]);
+    , [recentLocations]);
+
 
   function handleSubmit() {
     setLoading(true);
