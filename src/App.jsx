@@ -97,9 +97,12 @@ export default function App() {
         value={cityInput}
         onChange={(e) => setCityInput(e.target.value)}
         type="text"
+        onKeyDown={(e) => {if(e.key === "Enter") {
+          handleSubmit();
+        }}}
         placeholder="Enter City" />
 
-      <button
+      <button 
         onClick={handleSubmit}
         disabled={loading || disableSubmitButton}>Submit</button>
       {loading && <p>loading...</p>}
