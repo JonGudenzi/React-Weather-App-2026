@@ -88,6 +88,8 @@ function handleClearRecentSearches() {
   setRecentLocations([]);
 }
 
+const showClearButton = recentLocations.length > 0;
+
   return (
     <>
       <input
@@ -132,7 +134,7 @@ function handleClearRecentSearches() {
         )
       })}
 
-          {<button
+          {showClearButton && <button
       onClick={handleClearRecentSearches}
       >Clear Recent Searches</button>}
       
