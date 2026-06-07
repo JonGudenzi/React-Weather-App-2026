@@ -99,10 +99,9 @@ export default function App() {
         type="text"
         placeholder="Enter City" />
 
-      {<button
+      <button
         onClick={handleSubmit}
-        disabled={loading || disableSubmitButton}>Submit</button>}
-
+        disabled={loading || disableSubmitButton}>Submit</button>
       {loading && <p>loading...</p>}
       {error && <p>{error}</p>}
 
