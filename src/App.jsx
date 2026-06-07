@@ -19,7 +19,6 @@ export default function App() {
   useEffect(() => localStorage.setItem("recentLocations", JSON.stringify(recentLocations))
     , [recentLocations]);
 
-
   function handleSubmit() {
     setLoading(true);
     setError(null);
@@ -85,6 +84,10 @@ export default function App() {
   }
   console.log(recentLocations);
 
+function handleClearRecentSearches() {
+  setRecentLocations([]);
+}
+
   return (
     <>
       <input
@@ -128,6 +131,11 @@ export default function App() {
         </button>
         )
       })}
+
+          {<button
+      onClick={handleClearRecentSearches}
+      >Clear Recent Searches</button>}
+      
     </>
   )
 }
