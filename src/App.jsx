@@ -84,11 +84,12 @@ export default function App() {
   }
   console.log(recentLocations);
 
-function handleClearRecentSearches() {
-  setRecentLocations([]);
-}
+  function handleClearRecentSearches() {
+    setRecentLocations([]);
+  }
 
-const showClearButton = recentLocations.length > 0;
+  const disableSubmitButton = cityInput === "";
+  const showClearButton = recentLocations.length > 0;
 
   return (
     <>
@@ -98,9 +99,10 @@ const showClearButton = recentLocations.length > 0;
         type="text"
         placeholder="Enter City" />
 
-      <button
+      {<button
         onClick={handleSubmit}
-        disabled={loading}>Submit</button>
+        disabled={loading || disableSubmitButton}>Submit</button>}
+
       {loading && <p>loading...</p>}
       {error && <p>{error}</p>}
 
@@ -134,10 +136,10 @@ const showClearButton = recentLocations.length > 0;
         )
       })}
 
-          {showClearButton && <button
-      onClick={handleClearRecentSearches}
+      {showClearButton && <button
+        onClick={handleClearRecentSearches}
       >Clear Recent Searches</button>}
-      
+
     </>
   )
 }
