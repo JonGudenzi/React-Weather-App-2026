@@ -15,6 +15,7 @@ export default function App() {
     }
     return [];
   });
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => localStorage.setItem("recentLocations", JSON.stringify(recentLocations))
     , [recentLocations]);
@@ -74,7 +75,8 @@ export default function App() {
           const newRecentLocations = [location, ...filteredLocations];
           return newRecentLocations.slice(0, 5);
         });
-
+        setSelectedLocation(location);
+        setCityInput("");
         setLoading(false);
       })
       .catch(function () {
@@ -97,12 +99,15 @@ export default function App() {
         value={cityInput}
         onChange={(e) => setCityInput(e.target.value)}
         type="text"
-        onKeyDown={(e) => {if(e.key === "Enter") {
-          handleSubmit();
-        }}}
-        placeholder="Enter City" />
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+        placeholder="Enter City"
+      />
 
-      <button 
+      <button
         onClick={handleSubmit}
         disabled={loading || disableSubmitButton}>Submit</button>
       {loading && <p>loading...</p>}
@@ -124,9 +129,10 @@ export default function App() {
       {weatherData &&
         <WeatherCard
           weatherData={weatherData}
-          getWeatherDescription={getWeatherDescription} />}
+          getWeatherDescription={getWeatherDescription}
+          selectedLocation={selectedLocation} />}
 
-      <h3>Recent Searches</h3>
+      <h3>Recent Searches: {recentLocations.length}</h3>
       {recentLocations.map((location) => {
         return (<button
           onClick={() => handleLocationSelect(location)}
