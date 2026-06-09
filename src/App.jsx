@@ -91,7 +91,7 @@ export default function App() {
   }
 
   const disableSubmitButton = cityInput === "";
-  const showClearButton = recentLocations.length > 0;
+  const showRecentSearches = recentLocations.length !== 0;
 
   return (
     <>
@@ -132,21 +132,23 @@ export default function App() {
           getWeatherDescription={getWeatherDescription}
           selectedLocation={selectedLocation} />}
 
-      <h3>Recent Searches: {recentLocations.length}</h3>
-      {recentLocations.map((location) => {
-        return (<button
-          onClick={() => handleLocationSelect(location)}
-          key={location.id}>
-          {location.name} {"- "}
-          {location.admin1} {"- "}
-          {location.country}
-        </button>
-        )
-      })}
+      {showRecentSearches && <>
+        <h3>Recent Searches: {recentLocations.length}</h3>
+        {recentLocations.map((location) => {
+          return (<button
+            onClick={() => handleLocationSelect(location)}
+            key={location.id}>
+            {location.name} {"- "}
+            {location.admin1} {"- "}
+            {location.country}
+          </button>
+          )
+        })}
 
-      {showClearButton && <button
-        onClick={handleClearRecentSearches}
-      >Clear Recent Searches</button>}
+        {showRecentSearches && <button
+          onClick={handleClearRecentSearches}
+        >Clear Recent Searches</button>}
+      </>}
 
     </>
   )
